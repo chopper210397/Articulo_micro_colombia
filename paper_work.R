@@ -16,7 +16,7 @@ library(ggpubr)
 #------------------ SHANNON INDEX DATABASE ------------------#
 #------------------------------------------------------------#
 
-datamicro<-read_xlsx("C:\\Users\\LBarrios\\Documents\\proyectocolombia.xlsx")
+datamicro<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Shannonindex.xlsx")
 # DESCRIPTIVE STATS
 # str(datamicro)
 # describe(datamicro)
@@ -179,3 +179,23 @@ datamicro %>%
 
 ggsave(path = "C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\plots",
        width = 7, height = 5, device='tiff', dpi=300,filename = "shannonbytimepointpvalues.png")
+# working with kruskal wallis test
+shannon<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Shannonindex.xlsx")
+shannon$Shannon<-paste0(substr(shannon$Shannon,start = 1,stop = 1),".",substr(shannon$Shannon,start = 2,stop = 4))
+shannon$Shannon<-as.numeric(shannon$Shannon)
+shannon$Shannon<-round(shannon$Shannon,digits = 2)
+# converting from number to labels in sample type
+shannon$`Sample Type`<-ifelse( shannon$`Sample Type`==3,"BAL",ifelse(shannon$`Sample Type`==4,"Saline from BAL","Induced Sputum"))
+# converting from number to labels in time point
+shannon$`Time Point`<-ifelse(shannon$`Time Point`==0,"Admission",ifelse(shannon$`Time Point`==4,"Follow-up (6 months)","ND") )
+# general test
+kruskal.test(Shannon ~ Group, data = shannon)
+# by group
+# install.packages("dunn.test")
+library(dunn.test)
+dunn.test(shannon$Shannon,g = shannon$Group)
+pairwise.wilcox.test(x = shannon$Shannon, g = shannon$Group, p.adjust.method = "holm" )
+#
+faith<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Faith_pd.xlsx")
+observed<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Observed_features.xlsx")
+evenness<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Pielou_evenness.xlsx")

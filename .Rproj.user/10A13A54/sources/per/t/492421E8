@@ -3,24 +3,24 @@
     "path": "C:/Users/LBarrios/Desktop/Articulo_micro_colombia/paper_work.R",
     "project_path": "paper_work.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "1490438178",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1642385482202.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "196,87",
-        "scrollLine": "176"
+        "cursorPosition": "197,0",
+        "scrollLine": "177"
     },
     "folds": "",
-    "lastKnownWriteTime": 1642230220,
+    "lastKnownWriteTime": 1642433337,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1642387269120,
+    "last_content_update": 1642433337818,
     "read_only": false,
     "read_only_alternatives": []
 }
