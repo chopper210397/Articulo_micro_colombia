@@ -199,3 +199,62 @@ pairwise.wilcox.test(x = shannon$Shannon, g = shannon$Group, p.adjust.method = "
 faith<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Faith_pd.xlsx")
 observed<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Observed_features.xlsx")
 evenness<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\Pielou_evenness.xlsx")
+
+braycurtis<-read_xlsx("C:\\Users\\LBarrios\\Desktop\\Articulo_micro_colombia\\workfiles\\bray_curtis_distance_matrix.xlsx")
+install.packages("vegan")
+install.packages("ape")
+library(vegan)
+library(ape)
+pcoa <- wcmdscale(braycurtis, eig = TRUE)
+data(varespec)
+braycurtis<-braycurtis[,-1]
+
+braycurtis %>%
+  metaMDS(trace = F) %>%
+  ordiplot(type = "none") %>%
+  text("sites")
+
+
+PCoA.res<-capscale(my_pcoa~1,distance="bray")
+scores(my_pcoa,display="sites")
+plot(my_pcoa)
+
+a<-pcoa(my_pcoa,correction="none")
+biplot(my_pcoa)
+pcoa <- cmdscale (eurodist, eig = TRUE)
+PCA <- rda(my_pcoa, scale = FALSE)
+plot(PCA)
+ordiplot(my_pcoa,display = "sites",type = "point")
+braycurtis %>% ggplot()+geom_point()
+
+dist <- vegdist(my_pcoa,  method = "bray")
+PCOA <- pcoa(dist)
+barplot(PCOA$values$Relative_eig[1:10])
+PCOA <- pcoa(dist, correction = "cailliez")
+biplot.pcoa()
+biplot.pcoa(PCOA, varespec)
+#
+library(stats)
+distance_matrix <- as.dist(braycurtis[,c(2:48)])
+my_pcoa <- stats:::cmdscale(distance_matrix)
+my_pcoa <- as.data.frame(my_pcoa)
+plot(my_pcoa)
+text(my_pcoa[,1], my_pcoa[,2], labels=rownames(my_pcoa), cex= 1)
+names(my_pcoa)[1:2] <- c('PC1', 'PC2')
+my_pcoa %>% ggplot(aes(x = PC1, y = PC2))+geom_point(size=5)
+#
+PcoA2D_AT <- cmdscale(braycurtis, k =2)
+
+PcoA2D_AT <- as.data.frame(PcoA2D_AT)
+PcoA2D_AT$Group <- Zeller2014AbundTable$Groups
+names(PcoA2D_AT)[1:2] <- c('PC1', 'PC2')
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+               "#0072B2", "#D55E00", "#CC79A7")
+Tr_PcoA <- ggplot(PcoA2D_AT, aes(x = PC1, y = PC2, 
+                                 label = row.names(PcoA2D_AT)))
+Tr_PcoA + geom_point(size =5) +
+  scale_colour_manual(values = cbPalette[2:3]) +
+  geom_text(col = 'black')
+                   
+#
+
